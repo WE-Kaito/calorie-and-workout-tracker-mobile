@@ -21,7 +21,7 @@ const backdropSVG = `<svg width="375" height="459" viewBox="0 0 375 459" fill="n
 </svg>`;
 
 const Backdrop = () => {
-    return <SvgXml xml={backdropSVG} width="925.248" height="623.309" />;
+    return <SvgXml xml={backdropSVG} width="925.248" height="623.309" fill={"blue"} />;
 };
 
 export default Backdrop;
