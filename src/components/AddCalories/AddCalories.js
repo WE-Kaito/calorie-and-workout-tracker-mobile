@@ -7,13 +7,14 @@ import useStore from "../../utils/useStore";
 import PlusButton from "./PlusButton";
 
 function AddCalories({ theme }) {
-    const { addHistoryEntry } = useStore();
+    const { addHistoryEntry, history } = useStore();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [meal, setMeal] = useState("");
     const [kcal, setKcal] = useState(0);
 
     function handleSubmit() {
         meal !== "" ? addHistoryEntry(kcal, meal) : addHistoryEntry(kcal);
+        console.error(history);
     }
 
     return (

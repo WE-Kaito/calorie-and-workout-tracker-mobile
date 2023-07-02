@@ -1,13 +1,14 @@
 import { uid } from "uid";
-import {create} from "zustand";
-import {persist} from "zustand/middleware";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import * as SecureStore from "expo-secure-store";
 
 export const unixDate = new Date(
   new Date().getFullYear(),
   new Date().getMonth(),
   new Date().getDate()
 ).getTime();
+
 
 const useStore = create(
   persist(
@@ -50,11 +51,13 @@ const useStore = create(
                 meal: `${mealInput}`,
                 calories: `${caloriesInput}`,
                 time_stamp: `${hour < 10 ? "0" + hour : hour}:${
-                  minute < 10 ? "0" + minute : minute
+                    minute < 10 ? "0" + minute : minute
                 }`,
               },
             ],
           })),
+
+
 
         deleteHistoryEntry: (entryToDelete) =>
           set((state) => ({
@@ -195,7 +198,19 @@ const useStore = create(
     },
     {
       name: "trackedDataStorage",
-      storage: AsyncStorage,
+      storage: {
+        getItem: async (key) => {
+          const value = await SecureStore.getItemAsync(key);
+          return value ? JSON.parse(value) : undefined;
+        },
+        setItem: async (key, value) => {
+          await SecureStore.setItemAsync(key, JSON.stringify(value));
+        },
+        removeItem: async (key) => {
+          await SecureStore.deleteItemAsync(key);
+        },
+      },
+
     }
   )
 );
