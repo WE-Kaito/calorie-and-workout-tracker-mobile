@@ -44,15 +44,15 @@ const themes= {
 
 export const ThemeContext = createContext({});
 
-export default function ThemeProvider({ children }){
-    const [currentTheme, setCurrentTheme] = useState('default');
+export default function ThemeProvider({ children }) {
+    const [currentTheme, setCurrentTheme] = useState(themes.default);
 
     const toggleTheme = () => {
         setCurrentTheme((prevTheme) => {
             const themeKeys = Object.keys(themes);
             const currentThemeIndex = themeKeys.indexOf(prevTheme);
             const nextThemeIndex = (currentThemeIndex + 1) % themeKeys.length;
-            return themeKeys[nextThemeIndex];
+            return themes[themeKeys[nextThemeIndex]];
         });
     };
 
@@ -61,4 +61,4 @@ export default function ThemeProvider({ children }){
             {children}
         </ThemeContext.Provider>
     );
-};
+}

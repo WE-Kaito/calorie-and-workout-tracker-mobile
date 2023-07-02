@@ -1,6 +1,7 @@
 import { uid } from "uid";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import {create} from "zustand";
+import {persist} from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const unixDate = new Date(
   new Date().getFullYear(),
@@ -131,7 +132,7 @@ const useStore = create(
         },
 
         setExercise: (index, formData) => {
-          const exercises = useCalorieStore.getState().exercises;
+          const exercises = useStore.getState().exercises;
           exercises.splice(index, 1, formData);
           set(() => ({
             exercises: exercises,
@@ -139,7 +140,7 @@ const useStore = create(
         },
 
         deleteWorkout: (workoutTitle) => {
-          const exercises = useCalorieStore
+          const exercises = useStore
             .getState()
             .exercises.filter((exercise) => exercise.workout !== workoutTitle);
           set(() => ({
@@ -194,6 +195,7 @@ const useStore = create(
     },
     {
       name: "trackedDataStorage",
+      storage: AsyncStorage,
     }
   )
 );

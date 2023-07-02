@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { SvgXml } from 'react-native-svg';
+import {ThemeContext} from "../src/styles/themes";
+import {View} from "react-native";
 
 
 const backdropSVG = `<svg width="375" height="459" viewBox="0 0 375 459" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +23,33 @@ const backdropSVG = `<svg width="375" height="459" viewBox="0 0 375 459" fill="n
 </svg>`;
 
 const Backdrop = () => {
-    return <SvgXml xml={backdropSVG} width="925.248" height="623.309" fill={"blue"} />;
+    const { theme } = useContext(ThemeContext);
+
+    return (
+        <View style={styles.backdrop}>
+                <SvgXml style={styles.shadow} xml={backdropSVG} width="400" height="600" fill={theme.secondary} />
+
+        </View>
+    );
+};
+
+const styles = {
+    backdrop: {
+        position: 'absolute',
+        bottom: -50, // Adjust this value to move the backdrop vertically
+        left: 0, // Adjust this value to move the backdrop horizontally
+    },
+    shadow: {
+        boxShadow: 'inset 0px 0px 10px 2px rgba(0, 0, 0, 0.5)',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: -2, // Adjust this value to control the shadow's vertical position
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 4,
+        elevation: 500,
+    },
 };
 
 export default Backdrop;
