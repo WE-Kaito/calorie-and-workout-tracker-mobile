@@ -9,6 +9,7 @@ import Home from "./src/screens/Home";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
+
   return (
       <ThemeProvider>
       <NavigationContainer>

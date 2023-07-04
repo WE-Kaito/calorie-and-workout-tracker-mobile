@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import {CalorieCounterButton, CalorieCounterText} from "../styles/styles.js";
 import useStore from "../utils/useStore";
+import unixDate from "../utils/unixDate";
 
 function CountDisplay({theme}) {
-    const { calorieGoals, history, unixDate } = useStore();
+    const { calorieGoals, history } = useStore();
     const [isListVisible, setIsListVisible] = useState(false);
 
     const todaysGoal = calorieGoals.find(
@@ -28,11 +29,12 @@ function CountDisplay({theme}) {
             : true;
     }
 
+
     return (
         <CalorieCounterButton
             theme={theme}
-            onClick={(event) => {
-                event.stopPropagation();
+            onPress={(event) => {
+                //event.stopPropagation();
                 history.find((entry) => entry.date === unixDate) &&
                 setIsListVisible(!isListVisible);
             }}

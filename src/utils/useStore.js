@@ -2,13 +2,7 @@ import { uid } from "uid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as SecureStore from "expo-secure-store";
-
-export const unixDate = new Date(
-  new Date().getFullYear(),
-  new Date().getMonth(),
-  new Date().getDate()
-).getTime();
-
+import unixDate from "./unixDate";
 
 const useStore = create(
   persist(
@@ -17,6 +11,11 @@ const useStore = create(
       const minute = new Date().getMinutes();
 
       return {
+        unixDate: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate()
+        ).getTime(),
         history: [],
         calorieGoals: [{ date: unixDate, goal: 1600 }],
         dishes: [],
