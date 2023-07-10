@@ -41,7 +41,7 @@ console.log(unixDate());
             >
                 <CalorieCounterText theme={theme}
                                     notExceeded={getGoalExceeded()}>
-                    {Math.abs(calorieGoals.at(-1).goal - getCaloriesConsumed())}
+                    {(Math.abs(calorieGoals.at(-1).goal - getCaloriesConsumed())).toString()}
                     {'\n'}
                     {getGoalExceeded() ? "left" : "over"}
                 </CalorieCounterText>

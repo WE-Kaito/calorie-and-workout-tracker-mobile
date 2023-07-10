@@ -30,8 +30,7 @@ function ConsumedList({theme, setIsListVisible}) {
                         name={"times-circle"}
                         size={22}
                         style={{
-                            transform: `translateX(7px)`,
-                            color: "var(--7)",
+                            color: theme.accentNegative,
                         }}
                     />
                 </TouchableOpacity>
