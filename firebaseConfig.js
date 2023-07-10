@@ -1,9 +1,7 @@
 import { initializeApp } from 'firebase/app';
+import {getAuth} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
 
-import 'firebase/auth';
-import 'firebase/firestore';
-
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyChENlQHvKCfVD5pUmn9tEd19C3L94zFp8",
     authDomain: "calorie-and-workout-tracker.firebaseapp.com",
@@ -13,6 +11,7 @@ const firebaseConfig = {
     appId: "1:1017571202644:web:d443575152ab648cd53fc1"
 };
 
-const app = initializeApp(firebaseConfig);
-// For more information on how to access Firebase in your project,
-// see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
+
+export const FIREBASE_APP = initializeApp(firebaseConfig);
+export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
+export const FIREBASE_AUTH = getAuth(FIREBASE_APP);

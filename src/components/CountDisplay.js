@@ -37,6 +37,8 @@ console.log(unixDate());
                 theme={theme}
                 onPress={(event) => {
                     setIsListVisible(!isListVisible);
+                    console.error("history", history);
+                    console.log(calorieGoals)
                 }}
             >
                 <CalorieCounterText theme={theme}
