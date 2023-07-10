@@ -11,20 +11,15 @@ const useStore = create(
       const minute = new Date().getMinutes();
 
       return {
-        unixDate: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate()
-        ).getTime(),
         history: [],
-        calorieGoals: [{ date: unixDate, goal: 1600 }],
+        calorieGoals: [{ date: unixDate(), goal: 1600 }],
         dishes: [],
         exercises: [],
         routine: [],
         routineDisplay: [],
         completedWorkouts: [],
 
-        setCalorieGoal: (userInput) =>
+        setCalorieGoal: (userInput ) =>
           set((state) => {
             const newGoal =
               userInput !== undefined
@@ -35,8 +30,8 @@ const useStore = create(
               calorieGoals: [
                 ...state.calorieGoals
                   .slice()
-                  .filter((goalEntry) => goalEntry.date !== unixDate),
-                { date: unixDate, goal: newGoal },
+                  .filter((goalEntry) => goalEntry.date !== unixDate()),
+                { date: unixDate(), goal: newGoal },
               ],
             };
           }),
@@ -46,7 +41,8 @@ const useStore = create(
             history: [
               ...state.history,
               {
-                date: unixDate,
+                id: uid(),
+                date: unixDate(),
                 meal: `${mealInput}`,
                 calories: `${caloriesInput}`,
                 time_stamp: `${hour < 10 ? "0" + hour : hour}:${
@@ -56,14 +52,24 @@ const useStore = create(
             ],
           })),
 
+        resetStore: () =>
+            set(() => ({
+                history: [],
+                calorieGoals: [{ date: unixDate(), goal: 1600 }],
+                dishes: [],
+                exercises: [],
+                routine: [],
+                routineDisplay: [],
+                completedWorkouts: [],
+            })),
 
 
         deleteHistoryEntry: (entryToDelete) =>
-          set((state) => ({
-            history: state.history
-              .slice()
-              .filter((entry) => entry !== entryToDelete),
-          })),
+            set((state) => ({
+              history: state.history.filter(
+                  (entry) => entry.id !== entryToDelete.id
+              ),
+            })),
 
         addDish: (
           mealInput,

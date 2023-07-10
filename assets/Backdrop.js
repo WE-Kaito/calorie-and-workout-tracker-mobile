@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { SvgXml } from 'react-native-svg';
-import {ThemeContext} from "../src/styles/themes";
+import {ThemeContext} from "../src/themes";
 import {View} from "react-native";
 
 

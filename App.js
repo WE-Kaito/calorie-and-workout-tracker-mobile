@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import registerNNPushToken from "native-notify";
-import ThemeProvider from "./src/styles/themes";
+import ThemeProvider from "./src/themes";
 import Home from "./src/screens/Home";
 
 

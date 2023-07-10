@@ -1,7 +1,8 @@
 export default function unixDate() {
-  return new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
+  const currentDate = new Date();
+  return  new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate()
     ).getTime();
 }
