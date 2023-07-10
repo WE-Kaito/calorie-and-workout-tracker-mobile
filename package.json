@@ -17,7 +17,9 @@
     "expo-constants": "~14.2.1",
     "expo-device": "~5.2.1",
     "expo-notifications": "~0.18.1",
+    "expo-secure-store": "~12.1.1",
     "expo-status-bar": "~1.4.4",
+    "firebase": "^10.0.0",
     "lottie-react-native": "^5.1.6",
     "native-notify": "^3.0.6",
     "react": "18.2.0",
@@ -28,8 +30,7 @@
     "react-native-svg": "13.4.0",
     "styled-components": "^6.0.0-rc.6",
     "uid": "^2.0.2",
-    "zustand": "^4.3.8",
-    "expo-secure-store": "~12.1.1"
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -1,6 +1,6 @@
 import React from 'react';
 import {FontAwesome5} from "@expo/vector-icons";
-import {StyledPlusButton} from "../../styles/styles";
+import styled from "styled-components/native";
 
 function PlusButton({theme, isFormOpen, setIsFormOpen, handleSubmit}) {
 
@@ -15,3 +15,21 @@ function PlusButton({theme, isFormOpen, setIsFormOpen, handleSubmit}) {
 }
 
 export default PlusButton;
+
+export const StyledPlusButton = styled.TouchableOpacity`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: ${({isFormOpen}) => isFormOpen ? "127px" : "270px"};
+  background-color: ${({theme}) => theme.tertiary};
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: bold;
+
+  elevation: ${100};
+  box-shadow: 0 2px 3px black;
+`;
+
