@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as SecureStore from "expo-secure-store";
 import unixDate from "./unixDate";
+import firebase from "../../firebaseConfig";
 
 const useStore = create(
   persist(
@@ -37,10 +38,8 @@ const useStore = create(
           }),
 
         addHistoryEntry: (caloriesInput, mealInput = "⚡️ ---") =>
-          set((state) => ({
-            history: [
-              ...state.history,
-              {
+            set((state) => {
+              const entry = {
                 id: uid(),
                 date: unixDate(),
                 meal: `${mealInput}`,
@@ -48,9 +47,11 @@ const useStore = create(
                 time_stamp: `${hour < 10 ? "0" + hour : hour}:${
                     minute < 10 ? "0" + minute : minute
                 }`,
-              },
-            ],
-          })),
+              };
+              const updatedHistory = [...state.history, entry];
+              set({ history: updatedHistory });
+              firebase.firestore().collection("history").add(entry); // Save to Firestore
+            }),
 
         resetStore: () =>
             set(() => ({
@@ -214,6 +215,7 @@ const useStore = create(
         removeItem: async (key) => {
           await SecureStore.deleteItemAsync(key);
         },
+        getStorage: () => firebase.firestore(),
       },
 
     }
