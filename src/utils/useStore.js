@@ -22,7 +22,7 @@ const useStore = create(
                 routineDisplay: [],
                 completedWorkouts: [],
 
-                setCalorieGoal: (userInput) => {
+                setCalorieGoal: async (userInput) => {
                     const newGoal =
                         userInput !== undefined
                             ? userInput
@@ -32,9 +32,18 @@ const useStore = create(
                         calorieGoals: [
                             ...state.calorieGoals
                                 .filter((goalEntry) => goalEntry.date !== unixDate()),
-                            { date: unixDate(), goal: newGoal },
+                            {date: unixDate(), goal: newGoal},
                         ],
                     }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `calorieGoals/${unixDate()}`);
+                        await setDoc(ref, {
+                            date: unixDate(),
+                            goal: newGoal
+                        });
+                    } catch (error) {
+                        console.log("Error setting goal: ", error);
+                    }
                 },
 
 
@@ -48,18 +57,19 @@ const useStore = create(
                             minute < 10 ? "0" + minute : minute
                         }`,
                     };
-                    const previousHistory = await get().history;
+                    const previousHistory = get().history;
                     set((state) => ({
                         history: [...previousHistory, entry]
                     }));
-
-                    const docRef = doc(FIRESTORE_DB, `history/${entry.id}`);
-                    await setDoc(docRef, {
-                        entry
-                    });
+                    try {
+                        const ref = doc(FIRESTORE_DB, `history/${entry.id}`);
+                        await addDoc(ref, {entry});
+                    } catch (error) {
+                        console.log("Error adding entry: ", error);
+                    }
                 },
 
-                resetStore: () =>
+                resetStore: () => // currently only for testing
                     set(() => ({
                         history: [],
                         calorieGoals: [{date: unixDate(), goal: 1600}],
@@ -71,48 +81,61 @@ const useStore = create(
                     })),
 
 
-                deleteHistoryEntry: (entryToDelete) => {
-                    const ref = doc(FIRESTORE_DB, `history/${entryToDelete.id}`);
-                    deleteDoc(ref).then(() => {
-                        console.log("Document successfully deleted!");
-                    }).catch((error) => {
-                        console.error("Error removing document: ", error);
-                    });
+                deleteHistoryEntry: async (entryToDelete) => {
                     set((state) => ({
                         history: state.history.filter(
                             (entry) => entry.id !== entryToDelete.id
                         ),
                     }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `history/${entryToDelete.id}`);
+                        await deleteDoc(ref);
+                    } catch (error) {
+                        console.log("Error deleting entry: ", error);
+                    }
                 },
 
-                addDish: (
+                addDish: async (
                     mealInput,
                     caloriesInput,
                     massInput = 0,
                     proteinsInput = 0,
                     carbsInput = 0,
                     notesInput = ""
-                ) =>
+                ) => {
+                    const dish = {
+                        meal: `${mealInput}`,
+                        calories: `${caloriesInput}`,
+                        mass: `${massInput}`,
+                        proteins: `${proteinsInput}`,
+                        carbs: `${carbsInput}`,
+                        notes: `${notesInput}`,
+                    }
                     set((state) => ({
-                        dishes: [
-                            {
-                                meal: `${mealInput}`,
-                                calories: `${caloriesInput}`,
-                                mass: `${massInput}`,
-                                proteins: `${proteinsInput}`,
-                                carbs: `${carbsInput}`,
-                                notes: `${notesInput}`,
-                            },
-                            ...state.dishes,
-                        ],
-                    })),
+                        dishes: [dish, ...state.dishes],
+                    }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `dishes/${mealInput}`);
+                        await setDoc(ref, {dish});
+                    } catch (error) {
+                        console.log("Error adding dish: ", error);
+                    }
 
-                deleteDish: (dishToDelete) =>
+                },
+
+                deleteDish: async (dishToDelete) => {
                     set((state) => ({
                         dishes: state.dishes
                             .slice()
                             .filter((dish) => dish !== dishToDelete),
-                    })),
+                    }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `history/${dishToDelete.meal}`);
+                        await deleteDoc(ref);
+                    } catch (error) {
+                        console.log("Error deleting entry: ", error);
+                    }
+                },
 
                 addWorkout: (workoutTitle) =>
                     set((state) => ({
@@ -131,34 +154,44 @@ const useStore = create(
                         ],
                     })),
 
-                addExercise: (workoutTitle) => {
+                addExercise: async (workoutTitle) => {
                     const id = uid();
+                    const newExercise = {
+                        id: id,
+                        workout: workoutTitle,
+                        title: " NEW ",
+                        sets: 0,
+                        reps: 0,
+                        weight: 0,
+                        time: "00:00",
+                        notes: "",
+                    }
                     set((state) => ({
                         exercises: [
                             ...state.exercises,
-                            {
-                                id:
-                                    id === state.exercises.some((exercise) => exercise.id === id)
-                                        ? `${id}abc`
-                                        : id,
-                                workout: workoutTitle,
-                                title: " NEW ",
-                                sets: 0,
-                                reps: 0,
-                                weight: 0,
-                                time: "00:00",
-                                notes: "",
-                            },
+                            newExercise,
                         ],
                     }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `exercises/${id}`);
+                        await setDoc(ref, {newExercise});
+                    } catch (error) {
+                        console.log("Error adding exercise: ", error);
+                    }
                 },
 
-                setExercise: (index, formData) => {
-                    const exercises = useStore.getState().exercises;
+                setExercise: async (id, index, formData) => {
+                    const exercises = get().exercises;
                     exercises.splice(index, 1, formData);
                     set(() => ({
                         exercises: exercises,
                     }));
+                    try {
+                        const ref = doc(FIRESTORE_DB, `exercises/${id}`);
+                        await setDoc(ref, {formData});
+                    } catch (error) {
+                        console.log("Error setting exercise: ", error);
+                    }
                 },
 
                 deleteWorkout: (workoutTitle) => {
