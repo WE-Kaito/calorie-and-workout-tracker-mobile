@@ -22,22 +22,21 @@ const useStore = create(
                 routineDisplay: [],
                 completedWorkouts: [],
 
-                setCalorieGoal: (userInput) =>
-                    set((state) => {
-                        const newGoal =
-                            userInput !== undefined
-                                ? userInput
-                                : state.calorieGoals.at(-1).goal;
+                setCalorieGoal: (userInput) => {
+                    const newGoal =
+                        userInput !== undefined
+                            ? userInput
+                            : get().calorieGoals.at(-1).goal;
 
-                        return {
-                            calorieGoals: [
-                                ...state.calorieGoals
-                                    .slice()
-                                    .filter((goalEntry) => goalEntry.date !== unixDate()),
-                                {date: unixDate(), goal: newGoal},
-                            ],
-                        };
-                    }),
+                    set((state) => ({
+                        calorieGoals: [
+                            ...state.calorieGoals
+                                .filter((goalEntry) => goalEntry.date !== unixDate()),
+                            { date: unixDate(), goal: newGoal },
+                        ],
+                    }));
+                },
+
 
                 addHistoryEntry: async (caloriesInput, mealInput = "⚡️ ---") => {
                     const entry = {
@@ -51,11 +50,12 @@ const useStore = create(
                     };
                     const previousHistory = await get().history;
                     set((state) => ({
-                         history: [...previousHistory, entry]
+                        history: [...previousHistory, entry]
                     }));
 
                     const docRef = doc(FIRESTORE_DB, `history/${entry.id}`);
-                    await setDoc(docRef, { entry
+                    await setDoc(docRef, {
+                        entry
                     });
                 },
 
@@ -71,7 +71,7 @@ const useStore = create(
                     })),
 
 
-                deleteHistoryEntry: (entryToDelete) =>{
+                deleteHistoryEntry: (entryToDelete) => {
                     const ref = doc(FIRESTORE_DB, `history/${entryToDelete.id}`);
                     deleteDoc(ref).then(() => {
                         console.log("Document successfully deleted!");

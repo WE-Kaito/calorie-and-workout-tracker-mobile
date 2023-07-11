@@ -14,7 +14,11 @@ import CountDisplay from "../components/CountDisplay";
 
 export default function Home({navigation}){
     const { theme } = useContext(ThemeContext);
-    const {calorieGoals, setCalorieGoal, resetStore} = useStore();
+    const reset = useStore(state => state.resetStore); // for testing purposes
+    const setCalorieGoal = useStore(state => state.setCalorieGoal);
+    useEffect(() => {
+        setCalorieGoal();
+    }, []);
 
 return (
 
