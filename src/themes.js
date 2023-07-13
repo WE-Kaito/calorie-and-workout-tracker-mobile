@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useEffect, useState} from 'react';
+import useStore from "./utils/useStore";
 
 const themes= {
     default: {
@@ -47,11 +48,24 @@ export const ThemeContext = createContext({});
 export default function ThemeProvider({ children }) {
     const [currentTheme, setCurrentTheme] = useState(themes.default);
     const [themeIndex, setThemeIndex] = useState(0);
+    const saveTheme = useStore(state => state.saveTheme);
+    const savedTheme = useStore(state => state.savedTheme);
+
+    useEffect(() => {
+        setThemeIndex((prevThemeIndex) => (prevThemeIndex+ 1) % 3);
+    }, []);
+
+useEffect(() => {
+    setCurrentTheme(savedTheme)
+}, [themeIndex]);
 
     const toggleTheme = () => {
         const themeKeys = Object.keys(themes);
-        setThemeIndex((prevThemeIndex) => (prevThemeIndex + 1) % themeKeys.length);
-        setCurrentTheme(themes[themeKeys[themeIndex]])
+        setThemeIndex((prevThemeIndex) => (prevThemeIndex + 1) % 3);
+        saveTheme(themes[themeKeys[themeIndex]]);
+        console.log("themeIndex: " + themeIndex);
+        console.log("themeKeys: " + themeKeys);
+        console.error("savedTheme" + savedTheme.primary);
     };
 
     return (

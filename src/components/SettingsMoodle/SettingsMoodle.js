@@ -1,9 +1,12 @@
 import styled from "styled-components/native";
-import SettingsIcon from "../../assets/SettingsIcon";
+import SettingsIcon from "../../../assets/SettingsIcon";
 import { useState } from "react";
 import Constants from "expo-constants";
 import {StyleSheet, TouchableOpacity, Text} from "react-native";
+import CalorieGoalSettings from "./CalorieGoalSettings";
+import {FontAwesome5} from "@expo/vector-icons";
 export default function SettingsMoodle({ theme, toggleTheme, isSettingsVisible ,setIsSettingsVisible }) {
+
 
 
     function openClose() {
@@ -21,10 +24,12 @@ export default function SettingsMoodle({ theme, toggleTheme, isSettingsVisible ,
                 <SettingsButton onPress={openClose} style={[styles.paddingTop, styles.paddingLeft]}>
                     <SettingsIcon />
                 </SettingsButton>
+<CalorieGoalSettings theme={theme}/>
 
-
-                <TouchableOpacity onPress={toggleTheme} style={{position:"absolute", width:80, height:80, right:0, bottom:0, backgroundColor:"green"}}>
-                    <Text>THEME swap</Text>
+                <TouchableOpacity onPress={toggleTheme} style={{width:155, height:55, backgroundColor:"green"}}>
+                    <Text adjustsFontSizeToFit={true} style={{fontSize:30}}>
+                        THEME <FontAwesome5 name="retweet" color={theme.secondary} solid={true}/>
+                    </Text>
                 </TouchableOpacity>
 
             </Moodle>
@@ -55,6 +60,12 @@ const Moodle = styled.View`
   background-color: red;
   z-index: 2000;
   border-bottom-right-radius: 200px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 20px;
 `;
 
 const styles = StyleSheet.create({

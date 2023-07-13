@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import unixDate from "./unixDate";
 
 import {FIRESTORE_DB} from "../../firebaseConfig.js";
-import {doc, addDoc, setDoc, collection, deleteDoc} from "firebase/firestore";
+import {doc, setDoc, deleteDoc} from "firebase/firestore";
 
 const useStore = create(
     persist(
@@ -21,6 +21,23 @@ const useStore = create(
                 routine: [],
                 routineDisplay: [],
                 completedWorkouts: [],
+                savedTheme: {
+                    primary: "#6E85B7",
+                    secondary: "#14244E",
+                    tertiary: "#F8F9D7",
+                    black: "#191A1C",
+                    white: "ghostwhite",
+                    accentPositive: "aquamarine",
+                    accentNegative: "lightcoral",
+                    backAlt: "#c4d7e0",
+                    positive: "#00A36C",
+                    negative: "crimson",
+                    whiteAlt: "#D9D9D9",
+                },
+
+                saveTheme: (theme) => {
+                    set(({savedTheme: theme}));
+                },
 
                 setCalorieGoal: async (userInput) => {
                     const newGoal =
@@ -46,7 +63,6 @@ const useStore = create(
                     }
                 },
 
-
                 addHistoryEntry: async (caloriesInput, mealInput = "⚡️ ---") => {
                     const entry = {
                         id: uid(),
@@ -58,12 +74,10 @@ const useStore = create(
                         }`,
                     };
                     const previousHistory = get().history;
-                    set((state) => ({
-                        history: [...previousHistory, entry]
-                    }));
+                    set({history: [...previousHistory, entry]});
                     try {
                         const ref = doc(FIRESTORE_DB, `history/${entry.id}`);
-                        await addDoc(ref, {entry});
+                        await setDoc(ref, entry);
                     } catch (error) {
                         console.log("Error adding entry: ", error);
                     }

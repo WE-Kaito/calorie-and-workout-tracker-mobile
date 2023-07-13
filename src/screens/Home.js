@@ -10,7 +10,7 @@ import Constants from "expo-constants/src/Constants";
 import themeContext from "@react-navigation/native/src/theming/ThemeContext";
 import AddCalories from "../components/AddCalories/AddCalories";
 import CountDisplay from "../components/CountDisplay";
-import SettingsMoodle from "../components/SettingsMoodle";
+import SettingsMoodle from "../components/SettingsMoodle/SettingsMoodle";
 
 
 export default function Home({navigation}) {
