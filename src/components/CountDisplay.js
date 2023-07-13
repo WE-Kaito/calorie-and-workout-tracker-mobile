@@ -7,7 +7,7 @@ import ConsumedList from "./ConsumedList";
 function CountDisplay({theme}) {
     const { calorieGoals, history } = useStore();
     const [isListVisible, setIsListVisible] = useState(false);
-console.log(unixDate());
+
     const todaysGoal = calorieGoals.find(
         (entry) => entry.date === unixDate()
     )?.goal;
@@ -37,8 +37,6 @@ console.log(unixDate());
                 theme={theme}
                 onPress={(event) => {
                     setIsListVisible(!isListVisible);
-                    console.error("history", history);
-                    console.log(calorieGoals)
                 }}
             >
                 <CalorieCounterText theme={theme}

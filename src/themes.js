@@ -46,18 +46,16 @@ export const ThemeContext = createContext({});
 
 export default function ThemeProvider({ children }) {
     const [currentTheme, setCurrentTheme] = useState(themes.default);
+    const [themeIndex, setThemeIndex] = useState(0);
 
     const toggleTheme = () => {
-        setCurrentTheme((prevTheme) => {
-            const themeKeys = Object.keys(themes);
-            const currentThemeIndex = themeKeys.indexOf(prevTheme);
-            const nextThemeIndex = (currentThemeIndex + 1) % themeKeys.length;
-            return themes[themeKeys[nextThemeIndex]];
-        });
+        const themeKeys = Object.keys(themes);
+        setThemeIndex((prevThemeIndex) => (prevThemeIndex + 1) % themeKeys.length);
+        setCurrentTheme(themes[themeKeys[themeIndex]])
     };
 
     return (
-        <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme: currentTheme, swap: toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );
