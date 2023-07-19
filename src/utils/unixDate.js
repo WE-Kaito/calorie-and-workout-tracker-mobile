@@ -4,5 +4,6 @@ export default function unixDate() {
         currentDate.getFullYear(),
         currentDate.getMonth(),
         currentDate.getDate()
-    ).getTime();
+    ).getTime()
 }
+
