@@ -26,7 +26,7 @@ const Backdrop = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <View style={styles.backdrop}>
+        <View style={styles.backdrop} pointerEvents="box-none">
                 <SvgXml style={styles.shadow} xml={backdropSVG} width="400" height="600" fill={theme.secondary} />
 
         </View>

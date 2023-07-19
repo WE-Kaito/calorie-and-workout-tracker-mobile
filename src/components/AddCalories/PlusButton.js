@@ -1,6 +1,6 @@
-import React from 'react';
 import {FontAwesome5} from "@expo/vector-icons";
 import styled from "styled-components/native";
+
 
 function PlusButton({theme, isFormOpen, setIsFormOpen, handleSubmit}) {
 

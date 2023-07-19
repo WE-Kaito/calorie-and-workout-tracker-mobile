@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'
+import {StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity} from 'react-native';
+import {FontAwesome} from '@expo/vector-icons'
 import Backdrop from "../../assets/Backdrop";
 import PagesIcon from "../../assets/PagesIcon";
 import SettingsIcon from "../../assets/SettingsIcon";
@@ -10,23 +10,34 @@ import Constants from "expo-constants/src/Constants";
 import themeContext from "@react-navigation/native/src/theming/ThemeContext";
 import AddCalories from "../components/AddCalories/AddCalories";
 import CountDisplay from "../components/CountDisplay";
+import SettingsMoodle from "../components/SettingsMoodle/SettingsMoodle";
 
 
-export default function Home({navigation}){
-    const { theme } = useContext(ThemeContext);
-    const {calorieGoals, setCalorieGoal, resetStore} = useStore();
+export default function Home({navigation}) {
 
-return (
 
-    <View style={[styles.screen, { backgroundColor: theme.primary }]}>
-        <Backdrop/>
+    const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+    const {theme, swap} = useContext(ThemeContext);
+    const reset = useStore(state => state.resetStore); // for testing purposes
+    const setCalorieGoal = useStore(state => state.setCalorieGoal);
+    useEffect(() => {
+        setCalorieGoal();
+    }, []);
 
-        <CountDisplay theme={theme}/>
+    return (
 
-        <AddCalories theme={theme}/>
-    </View>
-)
+        <View style={[styles.screen, {backgroundColor: theme.primary}]}>
 
+
+            <SettingsMoodle theme={theme} toggleTheme={swap.valueOf()} isSettingsVisible={isSettingsVisible}
+                            setIsSettingsVisible={setIsSettingsVisible}/>
+
+            {!isSettingsVisible && <CountDisplay theme={theme}/>}
+            {!isSettingsVisible && <AddCalories theme={theme}/>}
+            <Backdrop/>
+
+        </View>
+    )
 
 
 }

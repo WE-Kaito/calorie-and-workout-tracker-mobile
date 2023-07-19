@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useStore from "../../utils/useStore";
 import PlusButton from "./PlusButton";
 import styled from "styled-components/native";
@@ -9,16 +9,20 @@ function AddCalories({theme}) {
     const [meal, setMeal] = useState("");
     const [kcal, setKcal] = useState(0);
 
+
     function handleSubmit() {
+        if (kcal === 0) {
+            return;
+        }
         (meal !== "" ? addHistoryEntry(kcal, meal) : addHistoryEntry(kcal));
         setMeal("");
         setKcal(0);
+
     }
 
     return (
         !isFormOpen ? (
-            <PlusButton theme={theme} isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen}
-                        handleSubmit={handleSubmit}/>
+            <PlusButton theme={theme} isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} handleSubmit={handleSubmit}/>
         ) : (
             <AddEntryContainer theme={theme}>
                 <StyledInput onChangeText={(e) => setMeal(e.valueOf().substring(0, 20))} placeholder="meal"

@@ -10,7 +10,6 @@ function ConsumedList({theme, setIsListVisible}) {
     const deleteHistoryEntry = useStore((state) => state.deleteHistoryEntry);
 
     const filteredHistory = history.filter((entry) => entry.date === unixDate());
-    console.log("Filtered history: ",filteredHistory);
 
     const renderEntry = (flatListEntry) => {
         const entry = {...flatListEntry.item};
@@ -23,7 +22,6 @@ function ConsumedList({theme, setIsListVisible}) {
                     style={{border: "none", background: "none"}}
                     onPress={() => {
                         deleteHistoryEntry(entry);
-                        console.log("delete entry: ", entry);
                     }}
                 >
                     <FontAwesome5

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
         import { SvgXml } from 'react-native-svg';
+import {ThemeContext} from "../src/themes";
 
 const settingsSVG = `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_5_111)">
@@ -20,7 +21,8 @@ const settingsSVG = `<svg width="30" height="30" viewBox="0 0 30 30" fill="none"
 </svg>`;
 
 const SettingsIcon = () => {
-        return <SvgXml xml={settingsSVG} width="30" height="30" />;
+        const { theme } = useContext(ThemeContext);
+        return <SvgXml xml={settingsSVG} width="60" height="60" fill={theme.tertiary} />;
 };
 
 export default SettingsIcon;
