@@ -109,6 +109,28 @@ const useStore = create(
                     }
                 },
 
+                getCaloriesConsumed: (day = unixDate()) => {
+                    return get().history.find((entry) => entry.date === day)
+                        ?  get().history
+                            .slice()
+                            .filter((entry) => entry.date === day)
+                            .map((entry) => parseInt(entry.calories))
+                            .reduce((accumulator, current) => {
+                                return accumulator + current;
+                            })
+                        : 0;
+                },
+
+                isGoalExceeded: (day = unixDate()) => {
+
+                    const todaysGoal = get().calorieGoals
+                        .find((entry) => entry.date === unixDate())?.goal;
+
+                    return get().history.find((entry) => entry.date === unixDate())
+                        ? todaysGoal <= get().getCaloriesConsumed(day)
+                        : false;
+                },
+
                 addDish: async (
                     mealInput,
                     caloriesInput,

@@ -1,49 +1,23 @@
 import {useState} from 'react';
 import useStore from "../utils/useStore";
-import unixDate from "../utils/unixDate";
 import styled from "styled-components/native";
 import ConsumedList from "./ConsumedList";
 
-function CountDisplay({theme}) {
-    const { calorieGoals, history } = useStore();
+export default function CountDisplay({theme}) {
     const [isListVisible, setIsListVisible] = useState(false);
-
-    const todaysGoal = calorieGoals.find(
-        (entry) => entry.date === unixDate()
-    )?.goal;
-
-    function getCaloriesConsumed(day = unixDate()) {
-        return history.find((entry) => entry.date === day)
-            ? history
-                .slice()
-                .filter((entry) => entry.date === day)
-                .map((entry) => parseInt(entry.calories))
-                .reduce((accumulator, current) => {
-                    return accumulator + current;
-                })
-            : 0;
-    }
-
-    function getGoalExceeded() {
-        return history.find((entry) => entry.date === unixDate())
-            ? todaysGoal >= getCaloriesConsumed()
-            : true;
-    }
-
+    const calorieGoals = useStore((state) => state.calorieGoals);
+    const getCaloriesConsumed = useStore(state => state.getCaloriesConsumed);
+    const isGoalExceeded = useStore(state => state.isGoalExceeded);
 
     return (
         <>
-            <CalorieCounterButton
-                theme={theme}
-                onPress={(event) => {
-                    setIsListVisible(!isListVisible);
-                }}
+            <CalorieCounterButton theme={theme}
+                                  onPress={(event) => setIsListVisible(!isListVisible)}
             >
-                <CalorieCounterText theme={theme}
-                                    notExceeded={getGoalExceeded()}>
+                <CalorieCounterText theme={theme} goalExceeded={isGoalExceeded()}>
                     {(Math.abs(calorieGoals.at(-1).goal - getCaloriesConsumed())).toString()}
                     {'\n'}
-                    {getGoalExceeded() ? "left" : "over"}
+                    {isGoalExceeded() ? "over" : "left"}
                 </CalorieCounterText>
             </CalorieCounterButton>
             {isListVisible && <ConsumedList theme={theme} setIsListVisible={setIsListVisible}/>}
@@ -51,12 +25,10 @@ function CountDisplay({theme}) {
     );
 }
 
-export default CountDisplay;
-
 export const CalorieCounterButton = styled.TouchableOpacity`
   display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
   width: 172px;
   height: 172px;
   border: none;
@@ -68,7 +40,7 @@ export const CalorieCounterButton = styled.TouchableOpacity`
   elevation: ${100};
 
   position: absolute;
-    top: 130px;
+  top: 130px;
 `;
 
 export const CalorieCounterText = styled.Text`
@@ -76,7 +48,7 @@ export const CalorieCounterText = styled.Text`
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: ${({ notExceeded, theme }) => (notExceeded ? theme.accentPositive : theme.accentNegative)};
+  color: ${({goalExceeded, theme}) => (goalExceeded ? theme.accentNegative : theme.accentPositive)};
   font-size: 36em;
   font-weight: 800;
 `;

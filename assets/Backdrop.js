@@ -38,7 +38,7 @@ const styles = {
         position: 'absolute',
         bottom: -50, // Adjust this value to move the backdrop vertically
         left: 0, // Adjust this value to move the backdrop horizontally
-        zIndex: -1,
+        zIndex: -100,
     },
     shadow: {
         boxShadow: 'inset 0px 0px 10px 2px rgba(0, 0, 0, 0.5)',

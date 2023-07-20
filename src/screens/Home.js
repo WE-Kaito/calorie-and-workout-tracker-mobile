@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Backdrop from "../../assets/Backdrop";
-import PagesIcon from "../../assets/PagesIcon";
-import SettingsIcon from "../../assets/SettingsIcon";
 import useStore from "../utils/useStore";
 import {ThemeContext} from "../themes";
 import Constants from "expo-constants/src/Constants";
@@ -21,6 +19,7 @@ export default function Home({navigation}) {
     useEffect(() => {
         setCalorieGoal();
     }, []);
+    
 
     return (
 
@@ -32,7 +31,8 @@ export default function Home({navigation}) {
 
             {!isSettingsVisible && <CountDisplay theme={theme}/>}
             {!isSettingsVisible && <AddCalories theme={theme}/>}
-
+            {// settings sollte kein moddle sein sondern Counter ersetzen
+            }
             <AppCalendar/>
 
             <Backdrop/>
