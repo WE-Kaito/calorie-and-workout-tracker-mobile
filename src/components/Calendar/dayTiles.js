@@ -10,18 +10,13 @@ export default function dayTiles(date) {
 
     const caloriesConsumed = useStore((state) => state.getCaloriesConsumed(roundedTileDate));
     const goalExceeded = useStore((state) => state.isGoalExceeded(roundedTileDate));
+    const hasConsumed = caloriesConsumed !== 0;
 
-     function dayTileColor() {
-        if (caloriesConsumed !== 0 ) {
-            return goalExceeded ? 'hotpink' : 'aquamarine';
-        } else {
-            return null;
-        }
-     }
 
     return (
-        <DayTile>
-            {dayTileColor() !== null && <InnerDayTileContainer style={{backgroundColor: `${dayTileColor()}`}}/>}
+        <DayTile onPress={() => console.error('selected day', roundedTileDate, ': ', caloriesConsumed, goalExceeded)}>
+            {hasConsumed && goalExceeded && <CircleNegative/>}
+            {hasConsumed && !goalExceeded && <CirclePositive/>}
             <DayTileText style={{color: today ? 'red' : null}}>
                 {date.day}
             </DayTileText>
@@ -39,13 +34,17 @@ const DayTile = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const InnerDayTileContainer = styled.View`
+const CircleNegative = styled.View`
   position: absolute;
   width: 35px;
   height: 35px;
   border-radius: 50%;
+    background: hotpink;
 `;
 
+const CirclePositive = styled(CircleNegative)`
+  background-color: aquamarine;
+`;
 
 const DayTileText = styled.Text`
   text-align: center;

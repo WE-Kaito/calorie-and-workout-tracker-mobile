@@ -210,9 +210,9 @@ const useStore = create<State>()(
                 isGoalExceeded: (day: number = unixDate()) : boolean => {
 
                     const todaysGoal : number = get().calorieGoals
-                        .find((entry) => entry.date === unixDate())?.goal;
+                        .find((entry) => entry.date === day)?.goal;
 
-                    return get().history.find((entry) => entry.date === unixDate())
+                    return get().history.find((entry) => entry.date === day)
                         ? todaysGoal <= get().getCaloriesConsumed(day)
                         : false;
                 },
