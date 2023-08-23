@@ -1,6 +1,6 @@
 # Calorie & Workout Tracker
 
-Reacreating my [first Project](https://github.com/WE-Kaito/calorie-and-workout-tracker-neuefische-capstone) with React Native, Expo and Firebase.
+Recreating my [first Project](https://github.com/WE-Kaito/calorie-and-workout-tracker-neuefische-capstone) with React Native, Expo and Firebase.
 
 Planned changes:
 - Polishing and improving current features.
